@@ -34,9 +34,25 @@ include $(BUILD_HOST_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := eng
+LOCAL_SRC_FILES := dvenue_pack.c
+LOCAL_CFLAGS += -I. -I/usr/include/ -DDVENUE8_3840 -DBOOT_MODE
+LOCAL_MODULE := pack_dvenue3840_boot
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_HOST_EXECUTABLE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE_TAGS := eng
 LOCAL_SRC_FILES := dvenue_unpack.c
 LOCAL_CFLAGS += -I. -I/usr/include/ -DDVENUE8_3840
 LOCAL_MODULE := unpack_dvenue3840
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_HOST_EXECUTABLE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE_TAGS := eng
+LOCAL_SRC_FILES := dvenue_unpack.c
+LOCAL_CFLAGS += -I. -I/usr/include/ -DDVENUE8_3840 -DBOOT_MODE
+LOCAL_MODULE := unpack_dvenue3840_boot
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_HOST_EXECUTABLE)
 

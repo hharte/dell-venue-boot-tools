@@ -38,11 +38,14 @@
 
 /* The Dell Venue 3x40 series has an additional offset of 0xF8 bytes. */
 #ifdef DVENUE8_3840
-#define DVENUE8_3840_OFFSET				(0xF8)
+#ifdef BOOT_MODE
+#define UNKNOWN_SIZE					(0)
 #else
-#define DVENUE8_3840_OFFSET				(0)
+#define UNKNOWN_SIZE					(0x1E0 + 0xF8)
+#endif /* BOOT_MODE */
+#else
+#define UNKNOWN_SIZE					(0x1E0)
 #endif /* DVENUE8_3840_OFFSET */
-#define UNKNOWN_SIZE					(0x1E0 + DVENUE8_3840_OFFSET)
 #define CMDLINE_SIZE   					(0x400)
 #define PADDING1_SIZE					(0x1000-0x410)
 #define BOOTSTUBSTACK_SIZE				(0x3000)
@@ -89,7 +92,7 @@ struct bootheader {
 uint8_t calc_sum(struct bootheader * hdr);
 
 /* Sanity check for struct size */
-typedef char z[(sizeof(struct bootheader) == 0x21e0 + DVENUE8_3840_OFFSET + HEAD_LEN + HEAD_PADDING + BOOTSTUBSTACK_EXTRA) ? 1 : -1];
+typedef char z[(sizeof(struct bootheader) == 0x2000 + UNKNOWN_SIZE + HEAD_LEN + HEAD_PADDING + BOOTSTUBSTACK_EXTRA) ? 1 : -1];
 
 /* CRC calculation (move from header file if the code is used in different project) */
 uint8_t calc_sum(struct bootheader * hdr) {
