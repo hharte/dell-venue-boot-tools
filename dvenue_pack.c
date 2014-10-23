@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	FILE *fbzImage;
 	FILE *framdisk;
 	struct stat st;
-	uint32_t tmp, tmp2, pad;
+	uint32_t tmp, tmp2, pad = 0;
 	char buf[BUFSIZ];
 	size_t size;
 	struct bootheader *file;

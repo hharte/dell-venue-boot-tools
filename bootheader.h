@@ -36,7 +36,13 @@
 #define PLATFORM					(0x380101)
 #define ID2_SIZE					(0x28) 
 
-#define UNKNOWN_SIZE					(0x1E0)
+/* The Dell Venue 3x40 series has an additional offset of 0xF8 bytes. */
+#ifdef DVENUE8_3840
+#define DVENUE8_3840_OFFSET				(0xF8)
+#else
+#define DVENUE8_3840_OFFSET				(0)
+#endif /* DVENUE8_3840_OFFSET */
+#define UNKNOWN_SIZE					(0x1E0 + DVENUE8_3840_OFFSET)
 #define CMDLINE_SIZE   					(0x400)
 #define PADDING1_SIZE					(0x1000-0x410)
 #define BOOTSTUBSTACK_SIZE				(0x3000)
@@ -45,8 +51,13 @@
 #define CMDLINE_END						(HEAD_LEN+HEAD_PADDING+UNKNOWN_SIZE+CMDLINE_SIZE)
 
 #define T_RECOVERY						(0xC)
+#ifdef DVENUE8_3840
+#define T_FASTBOOT						(0xF)
+#define T_BOOT							(0x1)
+#else
 #define T_FASTBOOT						(0xE)
 #define T_BOOT							(0x0)
+#endif /* DVENUE_3840 */
 
 #ifndef le32toh
 #  define le32toh(x) letoh32(x)
@@ -78,7 +89,7 @@ struct bootheader {
 uint8_t calc_sum(struct bootheader * hdr);
 
 /* Sanity check for struct size */
-typedef char z[(sizeof(struct bootheader) == 0x21e0 + HEAD_LEN + HEAD_PADDING + BOOTSTUBSTACK_EXTRA) ? 1 : -1];
+typedef char z[(sizeof(struct bootheader) == 0x21e0 + DVENUE8_3840_OFFSET + HEAD_LEN + HEAD_PADDING + BOOTSTUBSTACK_EXTRA) ? 1 : -1];
 
 /* CRC calculation (move from header file if the code is used in different project) */
 uint8_t calc_sum(struct bootheader * hdr) {
